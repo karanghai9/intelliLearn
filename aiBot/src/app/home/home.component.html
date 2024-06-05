@@ -1,0 +1,93 @@
+<div class="home">
+  <div [ngClass]="{'home-container-dark': modeFlag, 'home-container-light': !modeFlag}">
+    <div class="content">
+      <div class="content-head">
+        <div class="head-title">
+          <img src="../assets/images/logo.svg" alt="University Logo" height="50px">
+          <!-- <button  (click)='changeMode()' class="btn-class">Mode</button> -->
+            <span (click)="changeMode();"> <img class="icon-padding"
+              src="../../assets/images/mode.png"  alt="send button" width="50px">
+          </span>
+          <span class="right-container">
+            <span *ngIf="!loading" class="lang-container">
+              <span class="lang-title">
+                Preferred Language
+              </span>
+              <span class="select-lang-class">
+                <select (change)="changeLanguage()"  [(ngModel)]="currentLanguage">  
+                  <option [value]="'en'">English</option>
+                  <option *ngFor="let language of languages" [value]="language.code">{{ language.name }}</option>
+                </select>
+              </span>
+            </span>
+          </span>
+        </div>
+        <div class='ruler'>
+          <span class="horizontal-ruler"></span>
+        </div>
+      </div>
+      <div class="content-chat-screen" #chatContainer>
+        <app-loader *ngIf="loading"></app-loader>
+        <div class="chat" *ngFor="let data of conversation ">
+          <ng-container *ngIf="data.type === 'text'">
+            <span [ngClass]="{'msg-user-dark': modeFlag, 'msg-user-light': !modeFlag}">{{ data.content }}
+              <div class="time">{{ data.timestamp | date :'hh:mm a ' }}</div>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="data.type === 'voicenote'">
+            <span [ngClass]="{'msg-user-dark': modeFlag, 'msg-user-light': !modeFlag}">
+              <audio class="voice-note" controls>
+                <source [src]="data.audio_url" type="audio/mp3">
+                Your browser does not support the audio element.
+              </audio>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="data.type === 'bot_response'" class="msg-bot">
+            <div *ngIf="data.name === 'bot'" class="bot-response-details" [ngClass]="{'msg-bot-dark': modeFlag, 'msg-bot-light': !modeFlag}">
+              <div class="summary">
+                {{ data?.result}}
+                <div class="time left">{{ data.timestamp | date :'hh:mm a ' }}</div>
+              </div>
+              <div *ngIf="data.showBtnflag" class="summary-bottom">
+                <span class="btns">
+                  <button (click)='showVid(data.startTime); data.vflag = !data.vflag;' class="btn-class">Video</button>
+                  <span class="vertical"></span>
+                  <button  (click)='data.tflag = !data.tflag;' class="btn-class">Transcripts</button>
+                </span>
+              </div>
+              <div class="parent-vid">
+                <span *ngIf="data.vflag" class="video">
+                  <video #myVideo [src]="relativeVideoPath + data.videoUrl + '#t=' + data.seekTime.start" controls></video>
+                </span>
+              </div>
+              <div class="parent-trasncript">
+                <span *ngIf="data.tflag" [ngClass]="{'transcript-class-dark': modeFlag, 'transcript-class-light': !modeFlag}">
+                  <div class="transcript-title">Transcripts</div>
+                  <span >{{data.source}}</span>
+                </span>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <app-wait *ngIf="wait"></app-wait>
+      <div [ngClass]="{'content-type-bar-dark': modeFlag, 'content-type-bar-light': !modeFlag}">
+        <span class="type-bar">
+          <input [ngClass]="{'text-input-dark': modeFlag, 'text-input-light': !modeFlag}" type="text" [(ngModel)]="textInput" placeholder="Type your message..." #output>
+        </span>
+        <span *ngIf="textInput !=='' "  (click)="sendText();"> <img class="icon-padding"
+            src="../../assets/images/send_40dp_FILL0_wght600_GRAD0_opsz40.svg"  alt="send button" width="24px">
+        </span>
+        <span *ngIf="mic && textInput ==='' "  class="icon-padding">
+          <button *ngIf="!recording" class="record-btn" (click)="startVoiceInput();"  >
+            <img src="../../assets/images/mic_40dp_FILL0_wght600_GRAD0_opsz40.svg" alt="mic" width="24px">
+          </button>
+
+          <button *ngIf="recording" (click)="stopVoiceInput()" class="record-btn stop recording" #closeButton>
+            <img src="../../assets/images/stop_circle_24dp_FILL0_wght400_GRAD0_opsz24.png" alt="stop" width="24px">
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

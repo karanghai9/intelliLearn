@@ -1,0 +1,59 @@
+<div class="main-container">
+
+
+    <div *ngIf="loginPage" class="form-container">
+        <div class="form-title">
+            <span class="form-tag selected">
+                <span>LOGIN</span>
+                <span class="ruler"></span>
+            </span>
+            <!-- <span class="vertical-ruler"></span> -->
+            <span class="form-tag selected" (click)="onSingnUp()">
+                <span>SIGNUP</span>
+            </span>
+        </div>
+        <div class="warning">
+            
+            <input (keyup)="emailCheck()" class="field input-class width-90" type="text" placeholder="Enter Email" [(ngModel)] ="email">
+            <span class="sign">
+                <img *ngIf="!mailValid && showWarning" src="../../assets/images/warning_FILL0_wght400_GRAD0_opsz24.svg" alt="Warning Icon" width="24px" title="Only University mail of the form  email@th-bingen.de/ email@stud.th-bingen.de is allowed.">
+                <ng-container *ngIf="mailValid && showWarning">
+                  <img src="../../assets/images/check_circle_FILL0_wght400_GRAD0_opsz24.svg" alt="Check Icon" width="24px" title="Valid Email">
+                </ng-container>
+              </span>
+              
+        </div>
+        <button [disabled]="!mailValid || timer"  (click)="sendOtp()" class="field btn" >SEND OTP</button>
+
+        
+
+        <div *ngIf="otpSent" class="verify-container">
+            <input class="field input-class" type="text" placeholder="Enter OTP" [(ngModel)]="code">
+            <button class="field btn" (click)="openHome()">LOGIN</button>
+        </div>
+    </div>
+
+    <div *ngIf="!loginPage" class="form-container">
+        <div class="form-title">
+            <span class="form-tag selected" (click)="onSingnUp()">
+                <span>LOGIN</span>
+            </span>
+
+            <span class="form-tag selected">
+                <span>SIGNUP</span>
+                <span class="ruler"></span>
+            </span>
+
+        </div>
+
+        <input class="field input-class" type="text" placeholder="Enter Name">
+        <input class="field input-class" type="text" placeholder="Enter Email">
+
+        <button (click)="sendOtp()" class="field btn">SEND OTP</button>
+
+        <div *ngIf="otpSent" class="verify-container">
+            <input class="field input-class" type="text" placeholder="Enter OTP">
+            <button class="field btn">SIGNUP</button>
+        </div>
+    </div>
+</div>

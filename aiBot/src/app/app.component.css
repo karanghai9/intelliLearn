@@ -1,0 +1,58 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.header {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  z-index: 2;
+}
+
+.main-content {
+ overflow: hidden;
+ height: 100vh;
+}
+.main-background {
+  z-index: -1;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main-background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200%; 
+  background-image: url("../assets/images/0101ani-01.png"), url("../assets/images/0101ani-01.png"); 
+  background-position: center, center;
+  background-size: cover, cover;
+  animation: flowAnimation 60s linear infinite;
+    /* Add the blur effect */
+    filter: blur(2px);
+    -webkit-filter: blur(2px);
+}
+
+@keyframes flowAnimation {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(-50%); 
+  }
+}
+
+.footer-container {
+  width: 100%;
+  /* border: 2px solid rgb(255, 255, 255, 0.5); */
+  background-color: white;
+  color: #001437;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+}
